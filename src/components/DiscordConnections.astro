@@ -1,0 +1,57 @@
+---
+import type { ConnectionItem } from '../config/profile';
+import Icons from './Icons.astro';
+
+interface Props {
+  connections: ConnectionItem[];
+}
+
+const { connections } = Astro.props;
+---
+
+<section class="w-full space-y-3" aria-labelledby="connections-heading">
+  <div class="flex items-center justify-between px-1">
+    <h2 
+      id="connections-heading" 
+      class="text-xs font-semibold tracking-wider uppercase text-gray-500 dark:text-gray-400"
+    >
+      Connected Accounts
+    </h2>
+    <span class="text-xs text-gray-400 dark:text-gray-500 font-medium">
+      {connections.length} Accounts
+    </span>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+    {connections.map((conn) => (
+      <a
+        href={conn.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="group flex items-center justify-between p-3.5 min-h-[52px] rounded-xl bg-white/70 dark:bg-[#12141c]/60 backdrop-blur-xl hover:bg-white/90 dark:hover:bg-[#181b26]/75 border border-black/[0.06] dark:border-white/[0.08] hover:border-black/[0.12] dark:hover:border-white/[0.18] shadow-sm transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blurple"
+      >
+        <div class="flex items-center gap-3 min-w-0">
+          {/* Platform Icon */}
+          <div class="w-8 h-8 rounded-lg bg-black/[0.04] dark:bg-white/[0.05] border border-black/[0.04] dark:border-white/[0.05] flex items-center justify-center text-gray-700 dark:text-gray-200 group-hover:text-blurple dark:group-hover:text-blurple-light transition-colors shrink-0">
+            <Icons name={conn.icon} class="w-4 h-4" />
+          </div>
+
+          {/* Details */}
+          <div class="min-w-0">
+            <span class="text-xs font-semibold text-gray-800 dark:text-gray-200 truncate block">
+              {conn.platform}
+            </span>
+            <p class="text-xs text-gray-500 dark:text-gray-400 truncate">
+              {conn.handle}
+            </p>
+          </div>
+        </div>
+
+        {/* External Link Action Arrow */}
+        <div class="text-gray-400 dark:text-gray-500 group-hover:text-blurple dark:group-hover:text-blurple-light group-hover:translate-x-0.5 transition-all shrink-0 pl-2">
+          <Icons name="external-link" class="w-4 h-4" />
+        </div>
+      </a>
+    ))}
+  </div>
+</section>
