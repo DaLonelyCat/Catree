@@ -8,7 +8,7 @@ interface Props {
 const { profile } = Astro.props;
 ---
 
-<header class="relative w-full rounded-2xl overflow-hidden bg-white/70 dark:bg-[#12141c]/65 backdrop-blur-xl border border-black/[0.06] dark:border-white/[0.08] shadow-lg shadow-black/20 transition-all duration-200">
+<header class="relative w-full rounded-2xl overflow-hidden bg-white/70 dark:bg-obsidian-card/65 backdrop-blur-xl border border-black/[0.06] dark:border-white/[0.08] shadow-lg shadow-black/20 transition-all duration-200">
   {/* Banner backdrop */}
   <div 
     class="w-full h-36 sm:h-44 bg-cover bg-center relative"
@@ -17,9 +17,14 @@ const { profile } = Astro.props;
     {profile.bannerImageUrl && (
       <img 
         src={profile.bannerImageUrl} 
-        alt="Profile banner" 
+        alt="" 
+        aria-hidden="true"
         class="w-full h-full object-cover"
-        loading="lazy"
+        loading="eager"
+        fetchpriority="high"
+        decoding="async"
+        width="1632"
+        height="400"
       />
     )}
     <div class="absolute inset-0 bg-black/15"></div>
@@ -29,7 +34,7 @@ const { profile } = Astro.props;
   <div class="px-5 sm:px-7 pb-6 pt-0 relative">
     {/* Avatar offset */}
     <div class="flex flex-col sm:flex-row sm:items-end justify-between -mt-16 sm:-mt-20 gap-4 mb-4">
-      <div class="relative w-28 h-28 sm:w-32 sm:h-32 rounded-full p-1 bg-white dark:bg-[#12141c] border border-black/[0.08] dark:border-white/[0.1] shadow-md shrink-0">
+      <div class="relative w-28 h-28 sm:w-32 sm:h-32 rounded-full p-1 bg-white dark:bg-obsidian-card border border-black/[0.08] dark:border-white/[0.1] shadow-md shrink-0">
         <img 
           id="discord-avatar"
           src={profile.avatarUrl} 
@@ -37,6 +42,8 @@ const { profile } = Astro.props;
           class="w-full h-full rounded-full object-cover bg-black"
           width="128"
           height="128"
+          loading="eager"
+          decoding="async"
         />
       </div>
 
@@ -60,18 +67,18 @@ const { profile } = Astro.props;
     </div>
 
     {/* Name and Handle */}
-    <div class="space-y-1.5">
-      <div class="flex items-center gap-2.5 flex-wrap">
-        <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
+    <div class="space-y-1.5 min-w-0">
+      <div class="flex items-center gap-2.5 flex-wrap min-w-0">
+        <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 dark:text-white break-words">
           {profile.name}
         </h1>
-        <span class="text-sm font-semibold text-blurple bg-blurple/10 dark:bg-blurple/15 border border-blurple/20 px-2.5 py-0.5 rounded-lg">
+        <span class="text-sm font-semibold text-blurple bg-blurple/10 dark:bg-blurple/15 border border-blurple/20 px-2.5 py-0.5 rounded-lg break-all">
           @{profile.handle}
         </span>
       </div>
 
       {/* Bio text */}
-      <p class="text-sm sm:text-base text-gray-600 dark:text-gray-300 max-w-2xl leading-relaxed pt-0.5">
+      <p class="text-sm sm:text-base text-gray-600 dark:text-gray-300 max-w-2xl leading-relaxed pt-0.5 break-words">
         {profile.bio}
       </p>
     </div>

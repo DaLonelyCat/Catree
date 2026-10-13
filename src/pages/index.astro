@@ -1,9 +1,8 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import HeaderBanner from '../components/HeaderBanner.astro';
-import DiscordConnections from '../components/DiscordConnections.astro';
 import LinkTreeSection from '../components/LinkTreeSection.astro';
-import SocialRow from '../components/SocialRow.astro';
+import DiscordConnections from '../components/DiscordConnections.astro';
 import ThemeToggle from '../components/ThemeToggle.astro';
 import { profileConfig } from '../config/profile';
 ---
@@ -12,20 +11,20 @@ import { profileConfig } from '../config/profile';
   {/* Profile Banner, Avatar, and Bio */}
   <HeaderBanner profile={profileConfig.profile} />
 
-  {/* Discord Connected Accounts Grid */}
-  <DiscordConnections connections={profileConfig.connections} />
+  {/* Main Content Landmark */}
+  <main id="main-content" class="w-full space-y-5">
+    {/* Websites & Projects (Featured Portfolio) */}
+    <LinkTreeSection groups={profileConfig.linkGroups} />
 
-  {/* Linktree Categorized Link Groups */}
-  <LinkTreeSection groups={profileConfig.linkGroups} />
-
-  {/* Quick-Access Social Row */}
-  <SocialRow socials={profileConfig.socials} />
+    {/* Discord Connected Accounts Grid */}
+    <DiscordConnections connections={profileConfig.connections} />
+  </main>
 
   {/* Footer with Theme Toggle */}
   <footer class="w-full pt-4 pb-2 flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 border-t border-black/[0.06] dark:border-white/[0.08]">
     <div class="flex items-center gap-2">
       <span class="font-medium text-gray-700 dark:text-gray-300">{profileConfig.profile.name}</span>
-      <span>•</span>
+      <span aria-hidden="true">•</span>
       <span>Catree</span>
     </div>
     

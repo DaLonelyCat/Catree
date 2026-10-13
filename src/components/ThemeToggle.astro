@@ -5,16 +5,18 @@ import Icons from './Icons.astro';
 <button
   id="theme-toggle-btn"
   type="button"
-  aria-label="Toggle light and dark color theme"
-  class="relative w-11 h-11 rounded-xl bg-white/70 dark:bg-[#12141c]/60 backdrop-blur-xl hover:bg-white/90 dark:hover:bg-[#181b26]/75 border border-black/[0.06] dark:border-white/[0.08] hover:border-black/[0.12] dark:hover:border-white/[0.18] text-gray-700 dark:text-gray-300 hover:text-blurple dark:hover:text-blurple-light flex items-center justify-center shadow-sm transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blurple"
+  role="switch"
+  aria-checked="true"
+  aria-label="Switch to light color theme"
+  class="relative w-11 h-11 rounded-xl bg-white/70 dark:bg-obsidian-card/60 backdrop-blur-xl hover:bg-white/90 dark:hover:bg-obsidian-hover/75 active:scale-95 border border-black/[0.06] dark:border-white/[0.08] hover:border-black/[0.12] dark:hover:border-white/[0.18] text-gray-700 dark:text-gray-300 hover:text-blurple dark:hover:text-blurple-light flex items-center justify-center shadow-sm transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blurple"
 >
   {/* Sun icon (shown in dark mode) */}
-  <span class="hidden dark:block">
+  <span class="hidden dark:block pointer-events-none" aria-hidden="true">
     <Icons name="sun" class="w-5 h-5 text-amber-400" />
   </span>
 
   {/* Moon icon (shown in light mode) */}
-  <span class="block dark:hidden">
+  <span class="block dark:hidden pointer-events-none" aria-hidden="true">
     <Icons name="moon" class="w-5 h-5 text-gray-700" />
   </span>
 </button>
@@ -22,25 +24,35 @@ import Icons from './Icons.astro';
 <script>
   const toggleBtn = document.getElementById('theme-toggle-btn');
 
-  function getTheme(): 'dark' | 'light' {
-    if (typeof localStorage !== 'undefined' && localStorage.getItem('catree-theme')) {
-      return localStorage.getItem('catree-theme') === 'light' ? 'light' : 'dark';
-    }
-    return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+  function updateAriaState(isDark: boolean) {
+    if (!toggleBtn) return;
+    toggleBtn.setAttribute('aria-checked', isDark ? 'true' : 'false');
+    toggleBtn.setAttribute(
+      'aria-label', 
+      isDark ? 'Switch to light color theme' : 'Switch to dark color theme'
+    );
   }
 
   function setTheme(theme: 'dark' | 'light') {
-    if (theme === 'dark') {
+    const isDark = theme === 'dark';
+    if (isDark) {
       document.documentElement.classList.add('dark');
       localStorage.setItem('catree-theme', 'dark');
     } else {
       document.documentElement.classList.remove('dark');
       localStorage.setItem('catree-theme', 'light');
     }
+    updateAriaState(isDark);
   }
 
-  toggleBtn?.addEventListener('click', () => {
-    const isDark = document.documentElement.classList.contains('dark');
-    setTheme(isDark ? 'light' : 'dark');
-  });
+  // Initial sync with DOM state
+  if (toggleBtn) {
+    const isCurrentDark = document.documentElement.classList.contains('dark');
+    updateAriaState(isCurrentDark);
+
+    toggleBtn.addEventListener('click', () => {
+      const isDark = document.documentElement.classList.contains('dark');
+      setTheme(isDark ? 'light' : 'dark');
+    });
+  }
 </script>
